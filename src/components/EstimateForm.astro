@@ -30,6 +30,7 @@ const id = (k: string) => `${k}-${loc}`;
         <option value="not-sure">Not sure yet</option>
       </select>
     </div>
+    {compact && <input type="hidden" name="details" value="" />}
     {!compact && <div class="field full"><label for={id('details')}>Anything we should know? <span class="opt">Optional</span></label><textarea id={id('details')} name="details" rows="3" placeholder="Yard size, gate code, how often you want service…"></textarea></div>}
   </div>
   <button type="submit" class="btn btn-lime btn-block">Get my free estimate <Icon name="arrow" /></button>
