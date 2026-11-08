@@ -191,6 +191,14 @@ h3 { font-size: 1.4rem; letter-spacing: -0.02em; line-height: 1.15; }
 .towns a.home { background: var(--moss); color: var(--white); border-color: var(--moss); }
 .towns a.home .icon { color: var(--lime); }
 
+.towns .chip { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 12px; background: var(--sand); border: 2px solid transparent; font-weight: 700; color: var(--ink); }
+.towns .chip .icon { color: var(--leaf); }
+.towns .chip small { font-weight: 600; color: var(--slate); }
+.also { margin-top: 48px; text-align: center; }
+.also .towns { justify-content: center; margin: 18px 0; }
+.also h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.site-footer ul span { color: rgb(255 255 255 / .6); }
+
 /* FAQ */
 .faq-wrap { max-width: 880px; }
 .faq { display: grid; gap: 10px; }

@@ -5,6 +5,8 @@ import ReviewsBanner from '../../components/ReviewsBanner.astro';
 import CTA from '../../components/CTA.astro';
 import Icon from '../../components/Icon.astro';
 import { towns, milesFromRockland } from '../../data/content';
+const pages = towns.filter((t) => t.page);
+const others = towns.filter((t) => !t.page);
 ---
 <Base title="Service Area: Rockland & the South Shore | Harley Landscaping" description="Harley Landscaping serves Rockland, Abington, Hanover, Whitman, Hanson, Holbrook, Weymouth, Norwell, Pembroke, and Marshfield, MA. Free estimates." crumbs={[{ name: 'Service area', path: '/service-area' }]}>
   <PageHero kicker="Service area" h1="Lawn care across Rockland & the South Shore" lead="Based in Rockland and serving the towns around it. Pick your town below." photo="/images/backyard-stripes-shed.jpg" photoAlt="Striped backyard lawn" crumbs={[{ name: 'Service area', path: '/service-area' }]} />
@@ -12,7 +14,7 @@ import { towns, milesFromRockland } from '../../data/content';
   <section class="sec">
     <div class="wrap">
       <div class="town-grid">
-        {towns.map((t, i) => (
+        {pages.map((t, i) => (
           <a class:list={['town-card', { home: i === 0 }]} href={`/service-area/${t.slug}`} data-reveal>
             <Icon name="pin" />
             <h2>{t.name}, MA</h2>
@@ -21,7 +23,11 @@ import { towns, milesFromRockland } from '../../data/content';
           </a>
         ))}
       </div>
-      <p class="lead center-note">Don’t see your town? Call or text. If it’s close, Harley will come.</p>
+      <div class="also" data-reveal>
+        <h2>Also serving</h2>
+        <ul class="towns">{others.map((t) => <li><span class="chip"><Icon name="pin" />{t.name} <small>· {milesFromRockland(t)} mi</small></span></li>)}</ul>
+        <p class="lead">Don’t see your town? Call or text. If it’s close, Harley will come.</p>
+      </div>
     </div>
   </section>
   <CTA loc="area-hub" />

@@ -1,6 +1,6 @@
 ---
 import { site, tel } from '../data/site';
-import { services, towns } from '../data/content';
+import { services, towns, townHref } from '../data/content';
 import Icon from './Icon.astro';
 const year = new Date().getFullYear();
 ---
@@ -19,7 +19,7 @@ const year = new Date().getFullYear();
     </div>
     <div>
       <h2>Service area</h2>
-      <ul class="cols2">{towns.map((t) => <li><a href={`/service-area/${t.slug}`}>{t.name}</a></li>)}</ul>
+      <ul class="cols2">{towns.map((t) => <li>{townHref(t) ? <a href={townHref(t)!}>{t.name}</a> : <span>{t.name}</span>}</li>)}</ul>
     </div>
   </div>
   <div class="wrap fine"><span>© {year} {site.name} · Lawn care &amp; landscaping in {site.city}, MA</span><span><a href="/our-work">Our work</a> · <a href="/privacy-policy">Privacy</a></span></div>

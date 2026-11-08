@@ -5,7 +5,7 @@ import ReviewsBanner from '../../components/ReviewsBanner.astro';
 import CTA from '../../components/CTA.astro';
 import Photo from '../../components/Photo.astro';
 import Icon from '../../components/Icon.astro';
-import { services, towns, type Service } from '../../data/content';
+import { services, towns, townHref, type Service } from '../../data/content';
 import { site } from '../../data/site';
 
 export function getStaticPaths() {
@@ -63,7 +63,7 @@ const schema = [
       <div data-reveal>
         <p class="kicker">Where we offer it</p>
         <h2>{s.title} near you</h2>
-        <ul class="towns">{towns.map((t) => <li><a href={`/service-area/${t.slug}`}><Icon name="pin" />{t.name}</a></li>)}</ul>
+        <ul class="towns">{towns.map((t) => <li>{townHref(t) ? <a href={townHref(t)!}><Icon name="pin" />{t.name}</a> : <span class="chip"><Icon name="pin" />{t.name}</span>}</li>)}</ul>
       </div>
       <div data-reveal>
         <p class="kicker">Pair it with</p>

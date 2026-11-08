@@ -6,7 +6,7 @@ import CTA from '../components/CTA.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import { site, tel, sms } from '../data/site';
-import { services, towns, reviews, faqs } from '../data/content';
+import { services, towns, reviews, faqs, townHref } from '../data/content';
 import images from '../data/images.json';
 import { img } from '../lib/img';
 
@@ -124,7 +124,7 @@ const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEn
         <p class="lead">Based in Rockland, serving the towns around it. Not on the list? Ask. If it’s close, we’ll come.</p>
         <a class="link-arrow" href="/service-area">See the full service area <Icon name="arrow" /></a>
       </div>
-      <ul class="towns" data-reveal>{towns.map((t, i) => <li><a href={`/service-area/${t.slug}`} class:list={{ home: i === 0 }}><Icon name="pin" />{t.name}</a></li>)}</ul>
+      <ul class="towns" data-reveal>{towns.map((t, i) => <li>{townHref(t) ? <a href={townHref(t)!} class:list={{ home: i === 0 }}><Icon name="pin" />{t.name}</a> : <span class="chip"><Icon name="pin" />{t.name}</span>}</li>)}</ul>
     </div>
   </section>
 

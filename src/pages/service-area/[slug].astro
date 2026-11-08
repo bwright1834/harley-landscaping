@@ -1,16 +1,15 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import ReviewsBanner from '../../components/ReviewsBanner.astro';
 import CTA from '../../components/CTA.astro';
 import Photo from '../../components/Photo.astro';
 import Icon from '../../components/Icon.astro';
-import { services, towns, reviews, milesFromRockland, nearby, type Town } from '../../data/content';
+import { services, towns, reviews, milesFromRockland, nearby, townHref, type Town } from '../../data/content';
 import { site } from '../../data/site';
 import images from '../../data/images.json';
 
 export function getStaticPaths() {
-  return towns.map((t, i) => ({ params: { slug: t.slug }, props: { t, i } }));
+  return towns.map((t, i) => ({ t, i })).filter(({ t }) => t.page).map(({ t, i }) => ({ params: { slug: t.slug }, props: { t, i } }));
 }
 const { t, i } = Astro.props as { t: Town; i: number };
 const home = t.slug === 'rockland-ma';
@@ -41,7 +40,6 @@ const schema = [
   schema={schema}
 >
   <PageHero kicker={`${t.name}, MA`} h1={`Lawn care & landscaping in ${t.name}, MA`} lead={`Mowing, cleanups, mulching, and shrub work from a local crew based ${home ? 'in Rockland' : `${miles} mile${miles === 1 ? '' : 's'} away in Rockland`}. Free estimates.`} photo={heroPic.src} photoAlt={heroPic.alt} crumbs={[{ name: 'Service area', path: '/service-area' }, { name: `${t.name}, MA`, path }]} />
-  <ReviewsBanner />
 
   <section class="sec">
     <div class="wrap split top">
@@ -49,6 +47,7 @@ const schema = [
         <p class="kicker">Local crew</p>
         <h2>{home ? 'Rockland’s own lawn care crew' : `Your ${t.name} lawn, handled`}</h2>
         <p class="lead">{t.note}</p>
+        {(t.local ?? []).map((l) => <p>{l}</p>)}
         <p>Whether you need a weekly mow, a one-time cleanup, or the whole season handled, it’s one call. Harley comes out, walks the property, and gives you a straight price, free.</p>
         <div class="season"><Icon name="pin" /><div><b>Distance</b><p>{t.name} is {distance}.</p></div></div>
       </div>
@@ -82,7 +81,7 @@ const schema = [
       <div data-reveal>
         <p class="kicker">Nearby</p>
         <h2>Also serving</h2>
-        <ul class="towns">{near.map((n) => <li><a href={`/service-area/${n.slug}`}><Icon name="pin" />{n.name}</a></li>)}</ul>
+        <ul class="towns">{near.map((n) => <li>{townHref(n) ? <a href={townHref(n)!}><Icon name="pin" />{n.name}</a> : <span class="chip"><Icon name="pin" />{n.name}</span>}</li>)}</ul>
         <p style="margin-top:18px"><a class="link-arrow" href="/service-area">Full service area <Icon name="arrow" /></a></p>
       </div>
     </div>

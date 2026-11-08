@@ -129,12 +129,13 @@ export const services: Service[] = [
 ];
 
 // Service area. Coordinates are town centers, used for "about X miles from Rockland".
-export type Town = { slug: string; name: string; lat: number; lng: number; note: string };
+// page: true = gets its own town page. Others are listed as served towns only (no thin pages).
+export type Town = { slug: string; name: string; lat: number; lng: number; note: string; page?: boolean; local?: string[] };
 export const towns: Town[] = [
-  { slug: 'rockland-ma', name: 'Rockland', lat: 42.1307, lng: -70.9162, note: 'Rockland is home base. Harley Landscaping is based right here in town, so Rockland yards get the quickest scheduling of anywhere we serve.' },
-  { slug: 'abington-ma', name: 'Abington', lat: 42.1048, lng: -70.9453, note: 'Abington sits right next door to Rockland, so the crew is in town often and fitting in new yards is easy.' },
-  { slug: 'hanover-ma', name: 'Hanover', lat: 42.1132, lng: -70.812, note: 'Hanover’s bigger lots and wooded properties are a great fit for weekly mowing and fall leaf cleanups.' },
-  { slug: 'whitman-ma', name: 'Whitman', lat: 42.0807, lng: -70.9356, note: 'Whitman is a short drive from our Rockland base, and its neighborhood yards are exactly the kind of lawns Harley keeps sharp all season.' },
+  { slug: 'rockland-ma', name: 'Rockland', lat: 42.1307, lng: -70.9162, note: 'Rockland is home base. Harley Landscaping is based right here in town, so Rockland yards get the quickest scheduling of anywhere we serve.', page: true, local: ['Because the crew is based in town, Rockland yards are the easiest to fit in, whether that’s a one-time cleanup, a rain-day makeup, or an extra cut before a party.', 'Lenny D. from Rockland summed it up in his review: “THEY SHOW UP!”'] },
+  { slug: 'abington-ma', name: 'Abington', lat: 42.1048, lng: -70.9453, note: 'Abington sits right next door to Rockland, so the crew is in town often and fitting in new yards is easy.', page: true, local: ['Abington is right on Rockland’s western border, a few minutes from home base, so adding an Abington yard to a regular weekly route is easy.', 'A common setup here: weekly mowing, plus a spring and fall cleanup, so the yard is handled all year with one call.'] },
+  { slug: 'hanover-ma', name: 'Hanover', lat: 42.1132, lng: -70.812, note: 'Hanover’s bigger lots and wooded properties are a great fit for weekly mowing and fall leaf cleanups.', page: true, local: ['Hanover borders Rockland to the east, and on larger, tree-lined lots, fall leaf cleanups and shrub work make the biggest visible difference.', 'If your Hanover property backs up to woods, a spring cleanup to clear winter debris and a fall cleanup after the leaves drop are the two visits that matter most.'] },
+  { slug: 'whitman-ma', name: 'Whitman', lat: 42.0807, lng: -70.9356, note: 'Whitman is a short drive from our Rockland base, and its neighborhood yards are exactly the kind of lawns Harley keeps sharp all season.', page: true, local: ['Whitman sits just south of Rockland, a short drive from home base, which keeps travel time low and scheduling simple.', 'For Whitman’s neighborhood lots, weekly mowing with crisp edging plus fresh mulch in spring keeps the whole yard looking sharp.'] },
   { slug: 'hanson-ma', name: 'Hanson', lat: 42.0751, lng: -70.8801, note: 'Hanson’s wooded properties make fall cleanups especially important, and the crew is close by.' },
   { slug: 'holbrook-ma', name: 'Holbrook', lat: 42.1551, lng: -71.0087, note: 'Holbrook homeowners already trust Harley with their yards, and you can read one of their reviews right on this page.' },
   { slug: 'weymouth-ma', name: 'Weymouth', lat: 42.2207, lng: -70.9395, note: 'Weymouth is just north of Rockland, and its mix of neighborhood yards and larger lots is right in Harley’s wheelhouse.' },
@@ -150,6 +151,8 @@ export const milesFromRockland = (t: Town) => {
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(r.lat)) * Math.cos(toRad(t.lat)) * Math.sin(dLng / 2) ** 2;
   return Math.max(1, Math.round(3958.8 * 2 * Math.asin(Math.sqrt(a))));
 };
+export const townPages = () => towns.filter((t) => t.page);
+export const townHref = (t: Town) => (t.page ? `/service-area/${t.slug}` : null);
 export const nearby = (t: Town, n = 4) =>
   towns.filter((x) => x.slug !== t.slug).sort((a, b) => dist(a, t) - dist(b, t)).slice(0, n);
 const dist = (a: Town, b: Town) => (a.lat - b.lat) ** 2 + (a.lng - b.lng) ** 2;
