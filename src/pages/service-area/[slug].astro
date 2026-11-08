@@ -58,7 +58,7 @@ const schema = [
   <section class="sec sec-sand">
     <div class="wrap">
       <div class="sec-head" data-reveal><p class="kicker">Services in {t.name}</p><h2>What we do in {t.name}</h2></div>
-      <ul class="mini-svcs grid" data-reveal>{services.map((s) => <li><a href={`/services/${s.slug}`}><b>{s.title}</b><span>{s.short}</span><Icon name="arrow" /></a></li>)}</ul>
+      <ul class="mini-svcs grid" data-reveal>{services.map((s) => <li><a href={`/services/${s.slug}`}><b>{s.title} in {t.name}</b><span>{s.short}</span><Icon name="arrow" /></a></li>)}</ul>
     </div>
   </section>
 

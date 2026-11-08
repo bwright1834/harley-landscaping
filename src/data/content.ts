@@ -19,7 +19,7 @@ export const services: Service[] = [
   {
     slug: 'lawn-mowing',
     title: 'Lawn mowing & care',
-    h1: 'Lawn mowing service in Rockland, MA',
+    h1: 'Lawn mowing service in Rockland & the South Shore',
     short: 'Mowed, edged, trimmed, and blown clean on a schedule you can set and forget.',
     intro: 'A good mow is more than cutting grass. Harley’s crew mows at the right height for the season, edges every walk and bed, trims what the mower can’t reach, and blows the clippings off your driveway before they leave. You get a lawn that looks sharp every single week, without lifting a finger.',
     photo: '/images/crew-mowing-stripes.jpg',
@@ -41,7 +41,7 @@ export const services: Service[] = [
   {
     slug: 'spring-cleanup',
     title: 'Spring cleanups',
-    h1: 'Spring yard cleanup in Rockland, MA',
+    h1: 'Spring yard cleanup in Rockland & the South Shore',
     short: 'Winter debris cleared, beds cleaned out, and the lawn reset for the season.',
     intro: 'New England winters leave a mess: matted grass, fallen branches, leftover leaves, and beds full of debris. A spring cleanup clears all of it in one visit so the lawn can breathe and the beds are ready for mulch and new growth.',
     photo: '/images/leaf-blower-cleanup.jpg',
@@ -63,7 +63,7 @@ export const services: Service[] = [
   {
     slug: 'fall-cleanup',
     title: 'Fall leaf cleanups',
-    h1: 'Fall cleanup & leaf removal in Rockland, MA',
+    h1: 'Fall cleanup & leaf removal in Rockland & the South Shore',
     short: 'Leaves gone, beds tidied, and the yard put to bed before winter.',
     intro: 'Leaves left on the lawn over winter smother the grass and invite mold and bare spots in spring. A fall cleanup gets every leaf off the lawn and out of the beds, gives the yard a final cut, and leaves the property tidy before the first snow.',
     photo: '/images/fall-leaf-cleanup.jpg',
@@ -85,7 +85,7 @@ export const services: Service[] = [
   {
     slug: 'mulching',
     title: 'Mulching & garden beds',
-    h1: 'Mulching & garden bed maintenance in Rockland, MA',
+    h1: 'Mulching & garden bed maintenance in Rockland & the South Shore',
     short: 'Fresh mulch, sharp bed edges, and beds that stay weed-free longer.',
     intro: 'Fresh mulch is the fastest way to make a whole property look finished. It holds moisture, keeps weeds down, and gives every bed a clean, dark edge. Harley’s crew edges the beds, clears weeds, and lays mulch at the right depth so it looks great and actually works.',
     photo: '/images/ornamental-grasses-mulch.jpg',
@@ -107,7 +107,7 @@ export const services: Service[] = [
   {
     slug: 'shrub-trimming',
     title: 'Shrub & hedge trimming',
-    h1: 'Shrub & hedge trimming in Rockland, MA',
+    h1: 'Shrub & hedge trimming in Rockland & the South Shore',
     short: 'Hedges, shrubs, and overgrowth shaped up so the whole property looks kept.',
     intro: 'Overgrown shrubs make a house look neglected fast, and tall hedges are a pain to do yourself. Harley’s crew shapes shrubs, squares up hedges, and cuts back overgrowth, including the tall stuff that needs a ladder, then cleans up every clipping.',
     photo: '/images/hedge-trimming-ladder.jpg',

@@ -5,7 +5,8 @@ import ReviewsBanner from '../../components/ReviewsBanner.astro';
 import CTA from '../../components/CTA.astro';
 import Photo from '../../components/Photo.astro';
 import Icon from '../../components/Icon.astro';
-import { services, towns, townHref, type Service } from '../../data/content';
+import { services, towns, townHref, townPages, type Service } from '../../data/content';
+const areaLine = `Serving ${townPages().map((t) => t.name).join(', ')} and nearby South Shore towns.`;
 import { site } from '../../data/site';
 
 export function getStaticPaths() {
@@ -21,13 +22,13 @@ const schema = [
 ];
 ---
 <Base
-  title={`${s.title} in Rockland, MA | Harley Landscaping`}
+  title={`${s.title} in Rockland & the South Shore | Harley Landscaping`}
   description={`${s.short} Serving Rockland and the South Shore. 4.9 stars on Google. Free estimates: call or text ${site.phone}.`}
   image={s.photo}
   crumbs={[{ name: 'Services', path: '/services' }, { name: s.title, path }]}
   schema={schema}
 >
-  <PageHero kicker="Services" h1={s.h1} lead={s.short} photo={s.photo} photoAlt={s.photoAlt} crumbs={[{ name: 'Services', path: '/services' }, { name: s.title, path }]} />
+  <PageHero kicker="Services" h1={s.h1} lead={`${s.short} ${areaLine}`} photo={s.photo} photoAlt={s.photoAlt} crumbs={[{ name: 'Services', path: '/services' }, { name: s.title, path }]} />
   <ReviewsBanner />
 
   <section class="sec">
