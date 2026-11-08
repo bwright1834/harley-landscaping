@@ -105,8 +105,8 @@ const photoFor = (k: string) => (images as Record<string, unknown>)[k] as string
         {site.instagram && <a class="link-arrow" href={site.instagram} target="_blank" rel="noopener">More on Instagram <Icon name="arrow" /></a>}
       </div>
       <div class="work-grid" data-reveal>
-        {images.gallery.map((g, i) => (
-          <figure class:list={['work', { tall: i === 0 }]}><Photo src={g} alt="Lawn and landscaping work by Harley Landscaping" width={800} height={800} sizes="(max-width: 880px) 50vw, 33vw" /></figure>
+        {images.gallery.map((g) => (
+          <figure class="work"><Photo src={g} alt="Lawn and landscaping work by Harley Landscaping" width={800} height={800} sizes="(max-width: 880px) 50vw, 33vw" /></figure>
         ))}
       </div>
     </div>
