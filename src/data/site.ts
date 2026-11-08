@@ -25,7 +25,7 @@ export const site = {
   google: { rating: '4.9', count: 28, url: '' }, // TODO: paste his Google review link (g.page/r/...)
   yearsInBusiness: '3+',
 
-  instagram: 'https://www.instagram.com/harleylandscapingma', // TODO: confirm handle
+  instagram: 'https://www.instagram.com/harleylandscapema', // handle from his photo watermarks
   facebook: '', // TODO: real page (the Wix site linked to Wix's own Facebook)
 
   gtmId: '',

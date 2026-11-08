@@ -1,15 +1,15 @@
 {
-  "hero": "/images/placeholder-hero.jpg",
-  "lawn": "/images/placeholder-lawn.jpg",
-  "cleanup": "/images/placeholder-cleanup.jpg",
-  "maintenance": "/images/placeholder-maintenance.jpg",
-  "about": "/images/placeholder-about.jpg",
+  "hero": "/images/hero.jpg",
+  "lawn": "/images/lawn.jpg",
+  "cleanup": "/images/cleanup.jpg",
+  "maintenance": "/images/maintenance.jpg",
+  "about": "/images/about.jpg",
   "gallery": [
-    "/images/placeholder-g1.jpg",
-    "/images/placeholder-g2.jpg",
-    "/images/placeholder-g3.jpg",
-    "/images/placeholder-g4.jpg",
-    "/images/placeholder-g5.jpg",
-    "/images/placeholder-g6.jpg"
+    "/images/work-1.jpg",
+    "/images/work-2.jpg",
+    "/images/work-3.jpg",
+    "/images/work-4.jpg",
+    "/images/work-5.jpg",
+    "/images/work-6.jpg"
   ]
 }
