@@ -1,0 +1,104 @@
+---
+import '@fontsource-variable/bricolage-grotesque/wght.css';
+import '@fontsource-variable/figtree/wght.css';
+import displayFont from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
+import bodyFont from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
+import '../styles/global.css';
+import { img } from '../lib/img';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyCTA from '../components/StickyCTA.astro';
+import { site } from '../data/site';
+import { towns, services } from '../data/content';
+import images from '../data/images.json';
+
+interface Props { title: string; description: string; noindex?: boolean }
+const { title, description, noindex = false } = Astro.props;
+
+// Pre-launch guard: noindex while the site lives on *.netlify.app.
+const preLaunch = (process.env.URL ?? '').includes('.netlify.app');
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/$/, '');
+const canonical = site.url + (path || '/');
+const og = img(images.hero, 1200, 630);
+const ogImage = og.startsWith('http') ? og : site.url + og;
+
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  additionalType: 'https://en.wikipedia.org/wiki/Landscaping',
+  '@id': `${site.url}/#business`,
+  name: site.name,
+  url: site.url,
+  image: ogImage,
+  telephone: site.phoneE164,
+  description: 'Lawn care, seasonal cleanups, and property maintenance in Rockland, MA and the South Shore.',
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.region, postalCode: site.postal, addressCountry: 'US' },
+  areaServed: towns.map((t) => ({ '@type': 'City', name: `${t}, MA` })),
+  openingHoursSpecification: site.hoursSchema.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes })),
+  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.title } })) },
+  sameAs: [site.instagram, site.facebook].filter(Boolean),
+};
+const gtm = site.gtmId ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${site.gtmId}');` : '';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script is:inline>document.documentElement.classList.add('js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {(noindex || preLaunch) && <meta name="robots" content="noindex, follow" />}
+  <meta name="theme-color" content="#1f3d2b" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json" set:html={JSON.stringify(business)} />
+  {gtm && <script is:inline set:html={gtm} />}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <Header />
+  <main id="main"><slot /></main>
+  <Footer />
+  <StickyCTA />
+  <script is:inline>
+    (function () {
+      var els = document.querySelectorAll('[data-reveal]');
+      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    })();
+    window.dataLayer = window.dataLayer || [];
+    (function () {
+      try {
+        var p = new URLSearchParams(location.search);
+        var keys = ['gclid','gbraid','wbraid','fbclid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+        var a = JSON.parse(localStorage.getItem('hl_attr') || '{}');
+        if (keys.some(function (k) { return p.get(k); })) { a = {}; keys.forEach(function (k) { if (p.get(k)) a[k] = p.get(k); }); a.landing = location.pathname; a.referrer = document.referrer || ''; }
+        if (!a.landing) { a.landing = location.pathname; a.referrer = document.referrer || ''; }
+        localStorage.setItem('hl_attr', JSON.stringify(a));
+        document.querySelectorAll('form[data-lead] input[data-attr]').forEach(function (i) { i.value = a[i.dataset.attr] || ''; });
+      } catch (e) {}
+    })();
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('a'); if (!el) return;
+      var href = el.getAttribute('href') || '', ev = null;
+      if (href.indexOf('tel:') === 0) ev = 'click_call';
+      else if (href.indexOf('sms:') === 0) ev = 'click_text';
+      else if (el.dataset.cta === 'estimate') ev = 'click_estimate';
+      if (ev) window.dataLayer.push({ event: ev, cta_location: el.dataset.loc || 'unknown' });
+    });
+    document.addEventListener('submit', function (e) {
+      if (e.target.matches('form[data-lead]')) window.dataLayer.push({ event: 'form_submit', cta_location: e.target.dataset.loc || 'unknown' });
+    });
+  </script>
+</body>
+</html>

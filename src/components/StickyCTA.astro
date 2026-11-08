@@ -1,0 +1,9 @@
+---
+import { site, tel, sms } from '../data/site';
+import Icon from './Icon.astro';
+---
+<nav class="sticky-cta" aria-label="Quick contact">
+  <a href={tel} class="btn btn-lime" data-loc="sticky"><Icon name="phone" />Call</a>
+  {site.textEnabled && <a href={sms} class="btn btn-ghost" data-loc="sticky"><Icon name="text" />Text</a>}
+  <a href="/#estimate" class="btn btn-ghost" data-cta="estimate" data-loc="sticky">Estimate</a>
+</nav>

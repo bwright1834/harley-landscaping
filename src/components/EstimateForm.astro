@@ -1,0 +1,37 @@
+---
+// Netlify Forms. Before launch, route submissions to Harley (email/text) so leads
+// never sit in someone else's account.
+import { towns, services } from '../data/content';
+import Icon from './Icon.astro';
+interface Props { loc: string; compact?: boolean }
+const { loc, compact = false } = Astro.props;
+const attr = ['gclid', 'gbraid', 'wbraid', 'fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'landing', 'referrer'];
+const id = (k: string) => `${k}-${loc}`;
+---
+<form name="estimate" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="company" data-lead data-loc={loc} class:list={['est-form', { compact }]}>
+  <input type="hidden" name="form-name" value="estimate" />
+  <input type="hidden" name="form_location" value={loc} />
+  {attr.map((f) => <input type="hidden" name={f} data-attr={f} />)}
+  <p class="hp"><label>Leave blank <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+  <div class="fields">
+    <div class="field"><label for={id('name')}>Name</label><input id={id('name')} name="name" autocomplete="name" required /></div>
+    <div class="field"><label for={id('phone')}>Phone</label><input id={id('phone')} name="phone" type="tel" inputmode="tel" autocomplete="tel" required /></div>
+    <div class="field">
+      <label for={id('town')}>Town</label>
+      <select id={id('town')} name="town">
+        {towns.map((t) => <option value={t}>{t}</option>)}
+        <option value="other">Somewhere else</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for={id('service')}>Looking for</label>
+      <select id={id('service')} name="service">
+        {services.map((s) => <option value={s.id}>{s.title}</option>)}
+        <option value="not-sure">Not sure yet</option>
+      </select>
+    </div>
+    {!compact && <div class="field full"><label for={id('details')}>Anything we should know? <span class="opt">Optional</span></label><textarea id={id('details')} name="details" rows="3" placeholder="Yard size, gate code, how often you want service…"></textarea></div>}
+  </div>
+  <button type="submit" class="btn btn-lime btn-block">Get my free estimate <Icon name="arrow" /></button>
+  <p class="fine-print">No cost, no pressure. By sending this you’re OK with Harley calling or texting you back.</p>
+</form>

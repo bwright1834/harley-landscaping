@@ -1,0 +1,37 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Old Wix page paths -> one-page site sections (301 keeps any link equity)
+[[redirects]]
+  from = "/contact-1"
+  to = "/#estimate"
+  status = 301
+[[redirects]]
+  from = "/services"
+  to = "/#services"
+  status = 301
+[[redirects]]
+  from = "/about-us"
+  to = "/#about"
+  status = 301
+[[redirects]]
+  from = "/projects"
+  to = "/#work"
+  status = 301
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -1,0 +1,24 @@
+---
+import { site, tel } from '../data/site';
+import { towns } from '../data/content';
+import Icon from './Icon.astro';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap foot">
+    <div>
+      <a href="/" class="wordmark light"><span class="mark"><Icon name="leaf" /></span><span><b>Harley</b><small>Landscaping</small></span></a>
+      <p class="foot-tag">{site.tagline}</p>
+    </div>
+    <div>
+      <h2>Get in touch</h2>
+      <a href={tel} class="foot-phone phone-swap" data-loc="footer">{site.phone}</a>
+      <p>{site.hours}<br />Based in {site.city}, {site.region}</p>
+    </div>
+    <div>
+      <h2>Serving</h2>
+      <p class="foot-towns">{towns.join(' · ')}</p>
+    </div>
+  </div>
+  <div class="wrap fine"><span>© {year} {site.name}</span><a href="/privacy-policy">Privacy</a></div>
+</footer>

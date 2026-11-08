@@ -1,0 +1,15 @@
+{
+  "hero": "/images/placeholder-hero.jpg",
+  "lawn": "/images/placeholder-lawn.jpg",
+  "cleanup": "/images/placeholder-cleanup.jpg",
+  "maintenance": "/images/placeholder-maintenance.jpg",
+  "about": "/images/placeholder-about.jpg",
+  "gallery": [
+    "/images/placeholder-g1.jpg",
+    "/images/placeholder-g2.jpg",
+    "/images/placeholder-g3.jpg",
+    "/images/placeholder-g4.jpg",
+    "/images/placeholder-g5.jpg",
+    "/images/placeholder-g6.jpg"
+  ]
+}

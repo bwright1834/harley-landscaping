@@ -1,0 +1,30 @@
+---
+import { site, tel } from '../data/site';
+import Icon from './Icon.astro';
+const links = [
+  { href: '/#services', label: 'Services' },
+  { href: '/#work', label: 'Our work' },
+  { href: '/#reviews', label: 'Reviews' },
+  { href: '/#area', label: 'Service area' },
+];
+---
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <a href="/" class="wordmark" aria-label={`${site.name}, home`}>
+      <span class="mark"><Icon name="leaf" /></span>
+      <span><b>Harley</b><small>Landscaping</small></span>
+    </a>
+    <nav class="links" aria-label="Main">{links.map((l) => <a href={l.href}>{l.label}</a>)}</nav>
+    <div class="actions">
+      <a href={tel} class="hdr-phone phone-swap" data-loc="header"><Icon name="phone" />{site.phone}</a>
+      <a href="/#estimate" class="btn btn-lime" data-cta="estimate" data-loc="header">Free estimate</a>
+    </div>
+  </div>
+</header>
+<script is:inline>
+  (function () {
+    var h = document.querySelector('[data-header]');
+    var f = function () { h.classList.toggle('solid', window.scrollY > 40); };
+    f(); window.addEventListener('scroll', f, { passive: true });
+  })();
+</script>

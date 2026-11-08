@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, tel } from '../data/site';
+---
+<Base title="Request received | Harley Landscaping" description="Thanks! Harley will be in touch about your free estimate." noindex>
+  <section class="sec sec-moss page-top" style="min-height:70vh">
+    <div class="wrap narrow">
+      <p class="kicker">Request received</p>
+      <h1>Thanks! Harley will be in touch.</h1>
+      <p class="lead">Keep your phone handy. The call or text will come from {site.phone}. Want to talk now?</p>
+      <div class="btn-row"><a href={tel} class="btn btn-lime" data-loc="thank-you"><Icon name="phone" />Call {site.phone}</a><a href="/" class="btn btn-ghost">Back to home</a></div>
+    </div>
+  </section>
+  <script is:inline>window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'lead_submit' });</script>
+</Base>

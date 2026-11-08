@@ -1,0 +1,186 @@
+---
+import Base from '../layouts/Base.astro';
+import EstimateForm from '../components/EstimateForm.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { site, tel, sms } from '../data/site';
+import { services, towns, reviews, faqs } from '../data/content';
+import images from '../data/images.json';
+import { img } from '../lib/img';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const photoFor = (k: string) => (images as Record<string, unknown>)[k] as string;
+---
+<Base
+  title="Lawn Care & Landscaping in Rockland, MA | Harley Landscaping"
+  description="Lawn mowing, spring and fall cleanups, and property maintenance in Rockland and the South Shore. 4.9 stars on Google. Call or text (774) 204-4612 for a free estimate."
+>
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero-img" src={img(images.hero, 1800)} srcset={`${img(images.hero, 900)} 900w, ${img(images.hero, 1400)} 1400w, ${img(images.hero, 2000)} 2000w`} sizes="100vw" alt="A freshly cut lawn on the South Shore, maintained by Harley Landscaping" width="1600" height="1100" fetchpriority="high" />
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <a class="rating-pill" href="#reviews">
+          <span class="stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</span>
+          <b>{site.google.rating}</b> on Google · {site.google.count} reviews
+        </a>
+        <h1>Lawn care &amp; landscaping in <span class="hl">Rockland, MA</span></h1>
+        <p class="lead">Mowing, cleanups, and upkeep from a local crew that actually shows up. Free estimates across the South Shore.</p>
+        <div class="btn-row">
+          <a href={tel} class="btn btn-white" data-loc="hero"><Icon name="phone" /><span class="phone-swap">{site.phone}</span></a>
+          {site.textEnabled && <a href={sms} class="btn btn-ghost" data-loc="hero"><Icon name="text" />Text us</a>}
+        </div>
+      </div>
+      <div class="hero-card" id="quick-estimate">
+        <p class="card-kicker"><Icon name="sparkle" />Free estimate</p>
+        <h2>What does your yard need?</h2>
+        <EstimateForm loc="hero" compact />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF STRIP -->
+  <section class="strip" aria-label="Why Harley">
+    <ul class="wrap">
+      <li><Icon name="star" /><span><b>{site.google.rating} stars</b> on Google</span></li>
+      <li><Icon name="calendar" /><span><b>{site.yearsInBusiness} years</b> on the South Shore</span></li>
+      <li><Icon name="check" /><span><b>Free</b> estimates</span></li>
+      <li><Icon name="pin" /><span><b>Based in</b> Rockland</span></li>
+    </ul>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="sec" id="services">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <p class="kicker">Services</p>
+        <h2>What we take care of</h2>
+        <p class="lead">Pick one service or bundle the season. Either way, it’s one call and the yard is handled.</p>
+      </div>
+      <div class="svc-grid">
+        {services.map((s, i) => (
+          <article class="svc" data-reveal>
+            <div class="svc-photo">
+              <Photo src={photoFor(s.photo)} alt={`${s.title} by Harley Landscaping`} width={800} height={600} sizes="(max-width: 880px) 100vw, 33vw" />
+              <span class="svc-num">0{i + 1}</span>
+            </div>
+            <div class="svc-body">
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              <ul>{s.points.map((p) => <li><Icon name="check" />{p}</li>)}</ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec sec-sand">
+    <div class="wrap">
+      <div class="sec-head center" data-reveal>
+        <p class="kicker">How it works</p>
+        <h2>Three steps to a yard you don’t think about</h2>
+      </div>
+      <ol class="steps" data-reveal>
+        <li><span class="step-n">1</span><h3>Reach out</h3><p>Call, text, or send the form. Tell us what the yard needs.</p></li>
+        <li><span class="step-n">2</span><h3>Free walk-through</h3><p>Harley takes a look and gives you a straight price. No pressure.</p></li>
+        <li><span class="step-n">3</span><h3>We handle it</h3><p>The crew shows up on schedule and the yard stays sharp all season.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="sec sec-moss" id="work">
+    <div class="wrap">
+      <div class="sec-head row" data-reveal>
+        <div>
+          <p class="kicker">Our work</p>
+          <h2>Real yards, real results</h2>
+        </div>
+        {site.instagram && <a class="link-arrow" href={site.instagram} target="_blank" rel="noopener">More on Instagram <Icon name="arrow" /></a>}
+      </div>
+      <div class="work-grid" data-reveal>
+        {images.gallery.map((g, i) => (
+          <figure class:list={['work', { tall: i === 0 }]}><Photo src={g} alt="Lawn and landscaping work by Harley Landscaping" width={800} height={800} sizes="(max-width: 880px) 50vw, 33vw" /></figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="sec" id="reviews">
+    <div class="wrap reviews">
+      <div class="score" data-reveal>
+        <p class="kicker">Reviews</p>
+        <p class="big">{site.google.rating}</p>
+        <p class="stars lg">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</p>
+        <p class="muted">{site.google.count} reviews on Google</p>
+        {site.google.url && <a class="btn btn-dark" href={site.google.url} target="_blank" rel="noopener">Read them on Google</a>}
+      </div>
+      <div class="quotes">
+        {reviews.map((r) => (
+          <figure class="quote" data-reveal>
+            <p class="stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</p>
+            <blockquote>“{r.text}”</blockquote>
+            <figcaption><b>{r.name}</b>{r.town && <span> · {r.town}</span>}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sec sec-sand" id="about">
+    <div class="wrap split">
+      <div class="about-photo" data-reveal><Photo src={images.about} alt="Harley Landscaping at work" width={900} height={1000} /></div>
+      <div data-reveal>
+        <p class="kicker">About Harley</p>
+        <h2>Small crew. Local. Shows up.</h2>
+        <p class="lead">Harley Landscaping is a Rockland-based crew that treats every yard like it’s on their own street, from a small garden to a sprawling lawn to a commercial lot.</p>
+        <p>The reviews say it best: reliable, on time, and the yard looks better every visit. That’s the whole job.</p>
+        <a href="#estimate" class="btn btn-lime" data-cta="estimate" data-loc="about">Get a free estimate <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREA -->
+  <section class="sec" id="area">
+    <div class="wrap area">
+      <div data-reveal>
+        <p class="kicker">Service area</p>
+        <h2>Rockland and the South Shore</h2>
+        <p class="lead">Based in Rockland, serving the towns around it. Not on the list? Ask. If it’s close, we’ll come.</p>
+      </div>
+      <ul class="towns" data-reveal>{towns.map((t, i) => <li class:list={{ home: i === 0 }}><Icon name="pin" />{t}</li>)}</ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec sec-sand">
+    <div class="wrap faq-wrap">
+      <div class="sec-head" data-reveal><p class="kicker">FAQ</p><h2>Good questions</h2></div>
+      <div class="faq">{faqs.map((f) => <details><summary>{f.q}<span class="plus" aria-hidden="true"></span></summary><p>{f.a}</p></details>)}</div>
+    </div>
+  </section>
+
+  <!-- ESTIMATE -->
+  <section class="sec sec-moss estimate" id="estimate">
+    <div class="wrap split">
+      <div data-reveal>
+        <p class="kicker">Free estimate</p>
+        <h2>Let’s get your yard handled</h2>
+        <p class="lead">Send the form or reach Harley directly. Estimates are always free.</p>
+        <a href={tel} class="est-phone phone-swap" data-loc="estimate">{site.phone}</a>
+        <p class="muted-light"><Icon name="clock" /> {site.hours}</p>
+      </div>
+      <div class="est-card" data-reveal><EstimateForm loc="bottom" /></div>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Base>
