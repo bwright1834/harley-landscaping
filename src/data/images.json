@@ -1,15 +1,23 @@
 {
-  "hero": "/images/hero.jpg",
-  "lawn": "/images/lawn.jpg",
-  "cleanup": "/images/cleanup.jpg",
-  "maintenance": "/images/maintenance.jpg",
-  "about": "/images/about.jpg",
+  "hero": "/images/striped-lawn-hero.jpg",
+  "owner": "/images/harley-owner.jpg",
   "gallery": [
-    "/images/work-1.jpg",
-    "/images/work-2.jpg",
-    "/images/work-3.jpg",
-    "/images/work-4.jpg",
-    "/images/work-5.jpg",
-    "/images/work-6.jpg"
+    { "src": "/images/crew-mowing-stripes.jpg", "alt": "Harley Landscaping crew mowing a striped lawn on the South Shore" },
+    { "src": "/images/mowed-front-lawn.jpg", "alt": "Freshly mowed front lawn and driveway edge" },
+    { "src": "/images/ornamental-grasses-mulch.jpg", "alt": "Ornamental grasses in a freshly mulched bed" },
+    { "src": "/images/mower-stripes-closeup.jpg", "alt": "Mower stripes across a thick green lawn" },
+    { "src": "/images/hedge-trimming-ladder.jpg", "alt": "Trimming tall shrubs from a ladder beside a house" },
+    { "src": "/images/finished-front-yard.jpg", "alt": "Finished front yard with crisp edges" },
+    { "src": "/images/fall-leaf-cleanup.jpg", "alt": "Fall leaves covering a yard before a cleanup" },
+    { "src": "/images/backyard-stripes-shed.jpg", "alt": "Striped backyard lawn with a garden shed" },
+    { "src": "/images/edged-beds-brick-walkway.jpg", "alt": "Edged garden beds along a brick walkway" },
+    { "src": "/images/commercial-mowing-rockland.jpg", "alt": "Mowing a commercial property lawn in Rockland, MA" },
+    { "src": "/images/shrub-trim-mulch.jpg", "alt": "Shaped shrubs with fresh red mulch" },
+    { "src": "/images/striped-backyard-lawn.jpg", "alt": "Backyard lawn with clean mowing stripes" },
+    { "src": "/images/crew-mowing-wooded-lot.jpg", "alt": "Crew mowing a large lawn beside woods" },
+    { "src": "/images/leaf-blower-cleanup.jpg", "alt": "Blowing debris off a walkway during a cleanup" },
+    { "src": "/images/backyard-lawn-fence.jpg", "alt": "Fenced backyard lawn after mowing" },
+    { "src": "/images/mowing-large-lawn.jpg", "alt": "Mowing a large open lawn" },
+    { "src": "/images/fresh-cut-lawn-sunny.jpg", "alt": "Fresh-cut lawn on a sunny day" }
   ]
 }

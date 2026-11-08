@@ -1,0 +1,29 @@
+---
+// Scrolling Google-style reviews banner. Rating/count come from site.ts.
+// Each card shows where the review came from, quoted exactly.
+import { site } from '../data/site';
+import { reviews } from '../data/content';
+import Icon from './Icon.astro';
+const loop = [...reviews, ...reviews]; // doubled for a seamless marquee
+---
+<section class="rbanner" aria-label="Customer reviews">
+  <div class="rb-score">
+    <span class="rb-g" aria-hidden="true">G</span>
+    <div>
+      <p class="rb-num">{site.google.rating} <span class="stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</span></p>
+      <p class="rb-sub">{site.google.count} Google reviews</p>
+    </div>
+    {site.google.url && <a class="btn btn-lime rb-cta" href={site.google.url} target="_blank" rel="noopener">Leave a review</a>}
+  </div>
+  <div class="rb-track" aria-hidden="false">
+    <ul class="rb-list">
+      {loop.map((r, i) => (
+        <li class="rb-card" aria-hidden={i >= reviews.length ? 'true' : undefined}>
+          <p class="stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</p>
+          <p class="rb-text">“{r.text}”</p>
+          <p class="rb-by"><b>{r.name}</b>{r.town && ` · ${r.town}`}<span class="rb-src">via {r.source}</span></p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

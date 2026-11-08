@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ReviewsBanner from '../../components/ReviewsBanner.astro';
+import CTA from '../../components/CTA.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import { services, towns, reviews, milesFromRockland, nearby, type Town } from '../../data/content';
+import { site } from '../../data/site';
+import images from '../../data/images.json';
+
+export function getStaticPaths() {
+  return towns.map((t, i) => ({ params: { slug: t.slug }, props: { t, i } }));
+}
+const { t, i } = Astro.props as { t: Town; i: number };
+const home = t.slug === 'rockland-ma';
+const miles = milesFromRockland(t);
+const near = nearby(t);
+const local = reviews.filter((r) => r.town === t.name);
+const g = images.gallery;
+const pics = [g[(i * 3) % g.length], g[(i * 3 + 1) % g.length], g[(i * 3 + 2) % g.length]];
+const heroPic = g[(i * 5 + 4) % g.length];
+const path = `/service-area/${t.slug}`;
+const distance = home ? 'right here in town' : `about ${miles} mile${miles === 1 ? '' : 's'} from our Rockland base`;
+const faqs = [
+  { q: `Do you offer lawn care in ${t.name}?`, a: `Yes. ${site.name} serves ${t.name}, ${distance}. Mowing, spring and fall cleanups, mulching, and shrub trimming are all available.` },
+  { q: `How do I get an estimate in ${t.name}?`, a: `Call or text ${site.phone}, or send the form on this page. Harley will come out, look at the yard, and give you a free price.` },
+  { q: `Do you handle commercial properties in ${t.name}?`, a: `Yes. Homes, multi-family properties, and small commercial lots in ${t.name} are all welcome.` },
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'Service', name: `Lawn care and landscaping in ${t.name}, MA`, serviceType: 'Lawn care and landscaping', url: site.url + path,
+    provider: { '@id': `${site.url}/#business` }, areaServed: { '@type': 'City', name: `${t.name}, MA` } },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base
+  title={`Lawn Care & Landscaping in ${t.name}, MA | Harley Landscaping`}
+  description={`Lawn mowing, cleanups, mulching, and shrub trimming in ${t.name}, MA from a local Rockland crew. 4.9 stars on Google. Free estimates: ${site.phone}.`}
+  image={heroPic.src}
+  crumbs={[{ name: 'Service area', path: '/service-area' }, { name: `${t.name}, MA`, path }]}
+  schema={schema}
+>
+  <PageHero kicker={`${t.name}, MA`} h1={`Lawn care & landscaping in ${t.name}, MA`} lead={`Mowing, cleanups, mulching, and shrub work from a local crew based ${home ? 'in Rockland' : `${miles} mile${miles === 1 ? '' : 's'} away in Rockland`}. Free estimates.`} photo={heroPic.src} photoAlt={heroPic.alt} crumbs={[{ name: 'Service area', path: '/service-area' }, { name: `${t.name}, MA`, path }]} />
+  <ReviewsBanner />
+
+  <section class="sec">
+    <div class="wrap split top">
+      <div data-reveal>
+        <p class="kicker">Local crew</p>
+        <h2>{home ? 'Rockland’s own lawn care crew' : `Your ${t.name} lawn, handled`}</h2>
+        <p class="lead">{t.note}</p>
+        <p>Whether you need a weekly mow, a one-time cleanup, or the whole season handled, it’s one call. Harley comes out, walks the property, and gives you a straight price, free.</p>
+        <div class="season"><Icon name="pin" /><div><b>Distance</b><p>{t.name} is {distance}.</p></div></div>
+      </div>
+      <div class="pics3" data-reveal>{pics.map((p) => <figure class="work"><Photo src={p.src} alt={p.alt} width={700} height={700} sizes="(max-width: 900px) 50vw, 25vw" /></figure>)}</div>
+    </div>
+  </section>
+
+  <section class="sec sec-sand">
+    <div class="wrap">
+      <div class="sec-head" data-reveal><p class="kicker">Services in {t.name}</p><h2>What we do in {t.name}</h2></div>
+      <ul class="mini-svcs grid" data-reveal>{services.map((s) => <li><a href={`/services/${s.slug}`}><b>{s.title}</b><span>{s.short}</span><Icon name="arrow" /></a></li>)}</ul>
+    </div>
+  </section>
+
+  {local.length > 0 && (
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal><p class="kicker">From {t.name}</p><h2>What {t.name} customers say</h2></div>
+        <div class="quotes wide">{local.map((r) => <figure class="quote" data-reveal><p class="stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</p><blockquote>“{r.text}”</blockquote><figcaption><b>{r.name}</b> · {r.town}<span class="src"> · via {r.source}</span></figcaption></figure>)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class:list={['sec', { 'sec-sand': local.length > 0 }]}>
+    <div class="wrap link-cols">
+      <div data-reveal>
+        <p class="kicker">FAQ</p>
+        <h2>Lawn care in {t.name}: questions</h2>
+        <div class="faq">{faqs.map((f) => <details><summary>{f.q}<span class="plus" aria-hidden="true"></span></summary><p>{f.a}</p></details>)}</div>
+      </div>
+      <div data-reveal>
+        <p class="kicker">Nearby</p>
+        <h2>Also serving</h2>
+        <ul class="towns">{near.map((n) => <li><a href={`/service-area/${n.slug}`}><Icon name="pin" />{n.name}</a></li>)}</ul>
+        <p style="margin-top:18px"><a class="link-arrow" href="/service-area">Full service area <Icon name="arrow" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <CTA loc={`town-${t.slug}`} town={t.name} title={`Get a free estimate in ${t.name}`} />
+</Base>

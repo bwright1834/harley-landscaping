@@ -1,6 +1,6 @@
 ---
 import { site, tel } from '../data/site';
-import { towns } from '../data/content';
+import { services, towns } from '../data/content';
 import Icon from './Icon.astro';
 const year = new Date().getFullYear();
 ---
@@ -9,16 +9,18 @@ const year = new Date().getFullYear();
     <div>
       <a href="/" class="wordmark light"><span class="mark"><Icon name="leaf" /></span><span><b>Harley</b><small>Landscaping</small></span></a>
       <p class="foot-tag">{site.tagline}</p>
-    </div>
-    <div>
-      <h2>Get in touch</h2>
       <a href={tel} class="foot-phone phone-swap" data-loc="footer">{site.phone}</a>
       <p>{site.hours}<br />Based in {site.city}, {site.region}</p>
+      {site.instagram && <p><a href={site.instagram} target="_blank" rel="noopener">Instagram</a></p>}
     </div>
     <div>
-      <h2>Serving</h2>
-      <p class="foot-towns">{towns.join(' · ')}</p>
+      <h2>Services</h2>
+      <ul>{services.map((s) => <li><a href={`/services/${s.slug}`}>{s.title}</a></li>)}</ul>
+    </div>
+    <div>
+      <h2>Service area</h2>
+      <ul class="cols2">{towns.map((t) => <li><a href={`/service-area/${t.slug}`}>{t.name}</a></li>)}</ul>
     </div>
   </div>
-  <div class="wrap fine"><span>© {year} {site.name}</span><a href="/privacy-policy">Privacy</a></div>
+  <div class="wrap fine"><span>© {year} {site.name} · Lawn care &amp; landscaping in {site.city}, MA</span><span><a href="/our-work">Our work</a> · <a href="/privacy-policy">Privacy</a></span></div>
 </footer>

@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CTA from '../components/CTA.astro';
+import Photo from '../components/Photo.astro';
+import images from '../data/images.json';
+import { site } from '../data/site';
+---
+<Base title="Our Work: Lawn & Landscaping Photos | Harley Landscaping" description="Real photos of lawns, cleanups, mulch beds, and shrub work by Harley Landscaping in Rockland and the South Shore." crumbs={[{ name: 'Our work', path: '/our-work' }]}>
+  <PageHero kicker="Our work" h1="Real yards from around the South Shore" lead="Every photo here is a yard Harley’s crew takes care of. No stock photos." photo="/images/striped-backyard-lawn.jpg" photoAlt="Backyard lawn with clean mowing stripes" crumbs={[{ name: 'Our work', path: '/our-work' }]} />
+  <section class="sec">
+    <div class="wrap">
+      <div class="masonry">{images.gallery.map((g) => <figure class="m-item" data-reveal><Photo src={g.src} alt={g.alt} width={800} height={800} sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" /><figcaption>{g.alt}</figcaption></figure>)}</div>
+      {site.instagram && <p class="center-note"><a class="btn btn-dark" href={site.instagram} target="_blank" rel="noopener">More on Instagram</a></p>}
+    </div>
+  </section>
+  <CTA loc="gallery" />
+</Base>

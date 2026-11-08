@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ReviewsBanner from '../../components/ReviewsBanner.astro';
+import CTA from '../../components/CTA.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import { services, towns, type Service } from '../../data/content';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props as { s: Service };
+const others = services.filter((x) => x.slug !== s.slug);
+const path = `/services/${s.slug}`;
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'Service', name: s.title, serviceType: s.title, url: site.url + path, description: s.intro,
+    provider: { '@id': `${site.url}/#business` }, areaServed: towns.map((t) => ({ '@type': 'City', name: `${t.name}, MA` })) },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: s.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+---
+<Base
+  title={`${s.title} in Rockland, MA | Harley Landscaping`}
+  description={`${s.short} Serving Rockland and the South Shore. 4.9 stars on Google. Free estimates: call or text ${site.phone}.`}
+  image={s.photo}
+  crumbs={[{ name: 'Services', path: '/services' }, { name: s.title, path }]}
+  schema={schema}
+>
+  <PageHero kicker="Services" h1={s.h1} lead={s.short} photo={s.photo} photoAlt={s.photoAlt} crumbs={[{ name: 'Services', path: '/services' }, { name: s.title, path }]} />
+  <ReviewsBanner />
+
+  <section class="sec">
+    <div class="wrap split top">
+      <div data-reveal>
+        <p class="kicker">What you get</p>
+        <h2>{s.title}, done right</h2>
+        <p class="lead">{s.intro}</p>
+        <div class="season"><Icon name="calendar" /><div><b>When to book</b><p>{s.when}</p></div></div>
+      </div>
+      <ul class="incl" data-reveal>
+        {s.includes.map((i) => <li><span class="incl-ico"><Icon name="check" /></span><div><h3>{i.title}</h3><p>{i.text}</p></div></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec-moss">
+    <div class="wrap">
+      <div class="sec-head row" data-reveal><div><p class="kicker">Recent work</p><h2>From our crew</h2></div><a class="link-arrow" href="/our-work">Full gallery <Icon name="arrow" /></a></div>
+      <div class="work-grid three" data-reveal>{s.photos.map((p) => <figure class="work"><Photo src={p} alt={`${s.title} by Harley Landscaping`} width={800} height={800} sizes="(max-width: 900px) 50vw, 33vw" /></figure>)}</div>
+    </div>
+  </section>
+
+  <section class="sec sec-sand">
+    <div class="wrap faq-wrap">
+      <div class="sec-head" data-reveal><p class="kicker">FAQ</p><h2>{s.title}: common questions</h2></div>
+      <div class="faq">{s.faqs.map((f) => <details><summary>{f.q}<span class="plus" aria-hidden="true"></span></summary><p>{f.a}</p></details>)}</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap link-cols">
+      <div data-reveal>
+        <p class="kicker">Where we offer it</p>
+        <h2>{s.title} near you</h2>
+        <ul class="towns">{towns.map((t) => <li><a href={`/service-area/${t.slug}`}><Icon name="pin" />{t.name}</a></li>)}</ul>
+      </div>
+      <div data-reveal>
+        <p class="kicker">Pair it with</p>
+        <h2>Other services</h2>
+        <ul class="mini-svcs">{others.map((o) => <li><a href={`/services/${o.slug}`}><b>{o.title}</b><span>{o.short}</span><Icon name="arrow" /></a></li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <CTA loc={`svc-${s.slug}`} service={s.slug} title={`Get a free ${s.title.toLowerCase()} estimate`} />
+</Base>

@@ -12,14 +12,21 @@ import { site } from '../data/site';
 import { towns, services } from '../data/content';
 import images from '../data/images.json';
 
-interface Props { title: string; description: string; noindex?: boolean }
-const { title, description, noindex = false } = Astro.props;
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  image?: string;
+  schema?: Record<string, unknown>[];
+  crumbs?: { name: string; path: string }[];
+}
+const { title, description, noindex = false, image = images.hero, schema = [], crumbs } = Astro.props;
 
 // Pre-launch guard: noindex while the site lives on *.netlify.app.
 const preLaunch = (process.env.URL ?? '').includes('.netlify.app');
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/$/, '');
 const canonical = site.url + (path || '/');
-const og = img(images.hero, 1200, 630);
+const og = img(image, 1200, 630);
 const ogImage = og.startsWith('http') ? og : site.url + og;
 
 const business = {
@@ -33,11 +40,17 @@ const business = {
   telephone: site.phoneE164,
   description: 'Lawn care, seasonal cleanups, and property maintenance in Rockland, MA and the South Shore.',
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.region, postalCode: site.postal, addressCountry: 'US' },
-  areaServed: towns.map((t) => ({ '@type': 'City', name: `${t}, MA` })),
+  areaServed: towns.map((t) => ({ '@type': 'City', name: `${t.name}, MA` })),
   openingHoursSpecification: site.hoursSchema.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes })),
-  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.title } })) },
+  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.title, url: `${site.url}/services/${s.slug}` } })) },
   sameAs: [site.instagram, site.facebook].filter(Boolean),
 };
+const crumbSchema = crumbs && {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'Home', path: '' }, ...crumbs].map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: site.url + c.path })),
+};
+const graph = [business, ...(crumbSchema ? [crumbSchema] : []), ...schema];
 const gtm = site.gtmId ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${site.gtmId}');` : '';
 ---
 <!doctype html>
@@ -60,7 +73,7 @@ const gtm = site.gtmId ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.sta
   <meta property="og:url" content={canonical} />
   <meta property="og:image" content={ogImage} />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json" set:html={JSON.stringify(business)} />
+  {graph.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
   {gtm && <script is:inline set:html={gtm} />}
 </head>
 <body>

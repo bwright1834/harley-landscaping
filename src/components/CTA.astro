@@ -1,0 +1,19 @@
+---
+import EstimateForm from './EstimateForm.astro';
+import Icon from './Icon.astro';
+import { site, tel } from '../data/site';
+interface Props { loc: string; title?: string; text?: string; service?: string; town?: string }
+const { loc, title = 'Let’s get your yard handled', text = 'Send the form or reach Harley directly. Estimates are always free.', service, town } = Astro.props;
+---
+<section class="sec sec-moss estimate" id="estimate">
+  <div class="wrap split">
+    <div data-reveal>
+      <p class="kicker">Free estimate</p>
+      <h2>{title}</h2>
+      <p class="lead">{text}</p>
+      <a href={tel} class="est-phone phone-swap" data-loc={loc}>{site.phone}</a>
+      <p class="muted-light"><Icon name="clock" /> {site.hours}</p>
+    </div>
+    <div class="est-card" data-reveal><EstimateForm loc={loc} service={service} town={town} /></div>
+  </div>
+</section>

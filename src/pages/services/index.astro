@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ReviewsBanner from '../../components/ReviewsBanner.astro';
+import CTA from '../../components/CTA.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import { services } from '../../data/content';
+---
+<Base title="Landscaping Services in Rockland, MA | Harley Landscaping" description="Lawn mowing, spring and fall cleanups, mulching, and shrub trimming for homes and businesses in Rockland and the South Shore. Free estimates." crumbs={[{ name: 'Services', path: '/services' }]}>
+  <PageHero kicker="Services" h1="Landscaping services in Rockland, MA" lead="Everything your yard needs, season to season, from one local crew." photo="/images/mowed-front-lawn.jpg" photoAlt="Freshly mowed front lawn" crumbs={[{ name: 'Services', path: '/services' }]} />
+  <ReviewsBanner />
+  <section class="sec">
+    <div class="wrap svc-list">
+      {services.map((s, i) => (
+        <a class:list={['svc-row', { flip: i % 2 === 1 }]} href={`/services/${s.slug}`} data-reveal>
+          <div class="svc-row-photo"><Photo src={s.photo} alt={s.photoAlt} width={900} height={650} sizes="(max-width: 900px) 100vw, 50vw" /></div>
+          <div>
+            <p class="kicker">0{i + 1}</p>
+            <h2>{s.title}</h2>
+            <p class="lead">{s.short}</p>
+            <ul class="ticks">{s.includes.map((x) => <li><Icon name="check" />{x.title}</li>)}</ul>
+            <span class="go">Learn more <Icon name="arrow" /></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+  <CTA loc="services-hub" />
+</Base>

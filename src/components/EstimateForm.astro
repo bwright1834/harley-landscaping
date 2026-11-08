@@ -3,8 +3,8 @@
 // never sit in someone else's account.
 import { towns, services } from '../data/content';
 import Icon from './Icon.astro';
-interface Props { loc: string; compact?: boolean }
-const { loc, compact = false } = Astro.props;
+interface Props { loc: string; compact?: boolean; service?: string; town?: string }
+const { loc, compact = false, service = '', town = '' } = Astro.props;
 const attr = ['gclid', 'gbraid', 'wbraid', 'fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'landing', 'referrer'];
 const id = (k: string) => `${k}-${loc}`;
 ---
@@ -19,14 +19,14 @@ const id = (k: string) => `${k}-${loc}`;
     <div class="field">
       <label for={id('town')}>Town</label>
       <select id={id('town')} name="town">
-        {towns.map((t) => <option value={t}>{t}</option>)}
+        {towns.map((t) => <option value={t.name} selected={t.name === town}>{t.name}</option>)}
         <option value="other">Somewhere else</option>
       </select>
     </div>
     <div class="field">
       <label for={id('service')}>Looking for</label>
       <select id={id('service')} name="service">
-        {services.map((s) => <option value={s.id}>{s.title}</option>)}
+        {services.map((s) => <option value={s.slug} selected={s.slug === service}>{s.title}</option>)}
         <option value="not-sure">Not sure yet</option>
       </select>
     </div>

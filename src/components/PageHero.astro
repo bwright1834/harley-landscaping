@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+import { site, tel } from '../data/site';
+import { img } from '../lib/img';
+interface Props { kicker: string; h1: string; lead: string; photo: string; photoAlt: string; crumbs: { name: string; path: string }[] }
+const { kicker, h1, lead, photo, photoAlt, crumbs } = Astro.props;
+---
+<section class="phero">
+  <img class="hero-img" src={img(photo, 1800)} srcset={`${img(photo, 900)} 900w, ${img(photo, 1600)} 1600w`} sizes="100vw" alt={photoAlt} width="1600" height="1000" fetchpriority="high" />
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a>{crumbs.map((c, i) => <><span>/</span>{i === crumbs.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={c.path}>{c.name}</a>}</>)}</nav>
+    <p class="kicker">{kicker}</p>
+    <h1>{h1}</h1>
+    <p class="lead">{lead}</p>
+    <div class="btn-row">
+      <a href="#estimate" class="btn btn-lime" data-cta="estimate" data-loc="page-hero">Get a free estimate <Icon name="arrow" /></a>
+      <a href={tel} class="btn btn-ghost" data-loc="page-hero"><Icon name="phone" /><span class="phone-swap">{site.phone}</span></a>
+    </div>
+    <a class="rating-pill" href="/#reviews"><span class="stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</span><b>{site.google.rating}</b> on Google · {site.google.count} reviews</a>
+  </div>
+</section>

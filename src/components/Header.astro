@@ -1,12 +1,9 @@
 ---
 import { site, tel } from '../data/site';
+import { services } from '../data/content';
 import Icon from './Icon.astro';
-const links = [
-  { href: '/#services', label: 'Services' },
-  { href: '/#work', label: 'Our work' },
-  { href: '/#reviews', label: 'Reviews' },
-  { href: '/#area', label: 'Service area' },
-];
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const on = (p: string) => path === p || path.startsWith(p + '/');
 ---
 <header class="site-header" data-header>
   <div class="wrap bar">
@@ -14,17 +11,47 @@ const links = [
       <span class="mark"><Icon name="leaf" /></span>
       <span><b>Harley</b><small>Landscaping</small></span>
     </a>
-    <nav class="links" aria-label="Main">{links.map((l) => <a href={l.href}>{l.label}</a>)}</nav>
+    <nav class="links" aria-label="Main">
+      <div class="drop" data-drop>
+        <button type="button" aria-expanded="false" class:list={{ on: on('/services') }}>Services <Icon name="chevron" /></button>
+        <div class="drop-panel">
+          {services.map((s) => <a href={`/services/${s.slug}`}><b>{s.title}</b><span>{s.short}</span></a>)}
+          <a href="/services" class="drop-all">All services <Icon name="arrow" /></a>
+        </div>
+      </div>
+      <a href="/service-area" class:list={{ on: on('/service-area') }}>Service area</a>
+      <a href="/our-work" class:list={{ on: on('/our-work') }}>Our work</a>
+      <a href="/#reviews">Reviews</a>
+    </nav>
     <div class="actions">
       <a href={tel} class="hdr-phone phone-swap" data-loc="header"><Icon name="phone" />{site.phone}</a>
-      <a href="/#estimate" class="btn btn-lime" data-cta="estimate" data-loc="header">Free estimate</a>
+      <a href="#estimate" class="btn btn-lime" data-cta="estimate" data-loc="header">Free estimate</a>
+      <details class="menu">
+        <summary aria-label="Menu"><span></span><span></span><span></span></summary>
+        <nav class="menu-panel" aria-label="Mobile">
+          <p class="menu-h">Services</p>
+          {services.map((s) => <a href={`/services/${s.slug}`}>{s.title}</a>)}
+          <p class="menu-h">More</p>
+          <a href="/service-area">Service area</a>
+          <a href="/our-work">Our work</a>
+          <a href="/#reviews">Reviews</a>
+        </nav>
+      </details>
     </div>
   </div>
 </header>
 <script is:inline>
   (function () {
     var h = document.querySelector('[data-header]');
-    var f = function () { h.classList.toggle('solid', window.scrollY > 40); };
+    var f = function () { h.classList.toggle('solid', window.scrollY > 40 || document.body.dataset.solid === '1'); };
     f(); window.addEventListener('scroll', f, { passive: true });
+    var d = document.querySelector('[data-drop]'); if (!d) return;
+    var b = d.querySelector('button'), t;
+    var set = function (o) { d.classList.toggle('open', o); b.setAttribute('aria-expanded', o ? 'true' : 'false'); };
+    b.addEventListener('click', function () { set(!d.classList.contains('open')); });
+    d.addEventListener('mouseenter', function () { clearTimeout(t); set(true); });
+    d.addEventListener('mouseleave', function () { t = setTimeout(function () { set(false); }, 150); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+    document.addEventListener('click', function (e) { if (!d.contains(e.target)) set(false); });
   })();
 </script>
